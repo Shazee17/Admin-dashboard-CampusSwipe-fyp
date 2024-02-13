@@ -11,7 +11,7 @@ const Form = () => {
   const handleFormSubmit = async (values) => {
     console.log(values);
     axios
-      .post("http://localhost:3000/register", {...values, password: '123', semester: 6, degree_name: 'BSCS'})
+      .post("http://localhost:3000/register", values)
       .then((response) => {
         console.log(response.data);
         // Optionally, you can handle success response here
@@ -85,7 +85,7 @@ const Form = () => {
                 name="email"
                 error={!!touched.email && !!errors.email}
                 helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
@@ -98,7 +98,7 @@ const Form = () => {
                 name="cms_id"
                 error={!!touched.cms_id && !!errors.cms_id}
                 helperText={touched.cms_id && errors.cms_id}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
@@ -111,7 +111,7 @@ const Form = () => {
                 name="phone_no"
                 error={!!touched.phone_no && !!errors.phone_no}
                 helperText={touched.phone_no && errors.phone_no}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
@@ -124,18 +124,59 @@ const Form = () => {
                 name="address"
                 error={!!touched.address && !!errors.address}
                 helperText={touched.address && errors.address}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
-                type="checkbox"
-                label="Is Subscribed"
+                type="text"
+                label="Father's Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                checked={values.is_subscribed}
-                name="is_subscribed"
-                sx={{ gridColumn: "span 4" }}
+                value={values.father_name}
+                name="father_name"
+                error={!!touched.father_name && !!errors.father_name}
+                helperText={touched.father_name && errors.father_name}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Degree Name"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.degree_name}
+                name="degree_name"
+                error={!!touched.degree_name && !!errors.degree_name}
+                helperText={touched.degree_name && errors.degree_name}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Semester"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.semester}
+                name="semester"
+                error={!!touched.semester && !!errors.semester}
+                helperText={touched.semester && errors.semester}
+                sx={{ gridColumn: "span 1" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="password"
+                label="Password"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.password}
+                name="password"
+                error={!!touched.password && !!errors.password}
+                helperText={touched.password && errors.password}
+                sx={{ gridColumn: "span 1" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
@@ -164,6 +205,10 @@ const checkoutSchema = yup.object().shape({
     .matches(/^03[0-9]{9}$/, "Invalid phone number format")
     .required("Phone number is required"),
   address: yup.string().required("Address is required"),
+  father_name: yup.string().required("Father's name is required"),
+  degree_name: yup.string().required("Degree name is required"),
+  semester: yup.string().required("Semester is required"),
+  password: yup.string().required("Password is required"),
   is_subscribed: yup.boolean().required("Subscription status is required"),
 });
 
@@ -175,6 +220,10 @@ const initialValues = {
   cms_id: "",
   phone_no: "",
   address: "",
+  father_name: "",
+  degree_name: "",
+  semester: "",
+  password: "",
   is_subscribed: false,
 };
 
