@@ -9,6 +9,7 @@ import Team from './scenes/team';
 import Users from './scenes/users';
 import Transactions from './scenes/transactions';
 import LoginPage from './scenes/loginPage';
+import Devices from './scenes/devices';
 import ProfileForm from "./scenes/form"
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
                   <Route path='/team' element={<Team />} />
                   <Route path='/users' element={<Users />} />
                   <Route path='/transactions' element={<Transactions />} />
+                  <Route path='/devices' element={<Devices/>}/>
                   <Route path='/form' element={<ProfileForm />} />
                 </Routes>
               </main>
