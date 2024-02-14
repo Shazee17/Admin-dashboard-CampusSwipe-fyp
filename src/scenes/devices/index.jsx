@@ -52,9 +52,9 @@ const Devices = () => {
   }, [searchTerm, deviceData]);
 
   const columns = [
-    { field: "_id", headerName: "ID", flex: 0.5 },
-    { field: "device_id", headerName: "Device ID" },
-    { field: "location", headerName: "Location" },
+    { field: "_id", headerName: "ID", flex: 1 },
+    { field: "device_id", headerName: "Device ID", flex: 0.5  },
+    { field: "location", headerName: "Location", flex: 1  },
   ];
 
   return (
