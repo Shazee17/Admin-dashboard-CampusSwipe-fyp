@@ -158,6 +158,14 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
+            <Item
+              title="Subscriptions"
+              to="/subscriptions"
+              icon={<DocumentScannerIcon />} 
+              selected={selected}
+              setSelected={setSelected}
+            />
+
             <Typography
               variant="h6"
               color={colors.grey[300]}

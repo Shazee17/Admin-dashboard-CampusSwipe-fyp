@@ -11,6 +11,7 @@ import Transactions from './scenes/transactions';
 import LoginPage from './scenes/loginPage';
 import Devices from './scenes/devices';
 import ProfileForm from "./scenes/form"
+import Subscriptions from './scenes/subscriptions';
 
 const App = () => {
   const [theme, colorMode] = useMode();
@@ -40,6 +41,7 @@ const App = () => {
                   <Route path='/users' element={<Users />} />
                   <Route path='/transactions' element={<Transactions />} />
                   <Route path='/devices' element={<Devices/>}/>
+                  <Route path='/subscriptions' element={<Subscriptions/>} />
                   <Route path='/form' element={<ProfileForm />} />
                 </Routes>
               </main>

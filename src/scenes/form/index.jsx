@@ -4,27 +4,36 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
+import { useState } from "react";
 
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleFormSubmit = async (values) => {
+  const handleFormSubmit = async (values, { resetForm }) => {
     console.log(values);
     axios
       .post("http://localhost:3000/register", values)
       .then((response) => {
         console.log(response.data);
-        // Optionally, you can handle success response here
+        setSuccessMessage('User registered successfully!');
+        setErrorMessage(''); // Clear any previous error message
+        resetForm();
       })
       .catch((error) => {
         console.error("Error creating user:", error);
-        // Optionally, you can handle error here
+        setErrorMessage('Error creating user'); // Set error message
+        setSuccessMessage(''); // Clear any previous success message
       });
   };
 
   return (
     <Box m="20px">
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
+
+      {successMessage && <p>{successMessage}</p>}
+      {errorMessage && <p>{errorMessage}</p>}
 
       <Formik
         onSubmit={handleFormSubmit}
