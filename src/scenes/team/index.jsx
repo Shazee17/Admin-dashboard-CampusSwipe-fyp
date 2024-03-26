@@ -17,7 +17,7 @@ const Team = () => {
 
   const fetchTeamData = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/team");
+      const response = await axios.get("http://localhost:3000/team");
       setTeamData(response.data);
     } catch (error) {
       console.error("Error fetching team data:", error);

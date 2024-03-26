@@ -17,7 +17,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Fetch data from the API endpoint
-    axios.get('http://localhost:3001/transactions')
+    axios.get('http://localhost:3000/transactions')
       .then(response => {
         setTransactionsData(response.data.slice(0, 3)); // Slice to get only the first three transactions
       })

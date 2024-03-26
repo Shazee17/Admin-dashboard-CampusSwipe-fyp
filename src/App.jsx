@@ -12,7 +12,8 @@ import LoginPage from './scenes/loginPage';
 import Devices from './scenes/devices';
 import ProfileForm from "./scenes/form"
 import Subscriptions from './scenes/subscriptions';
-
+import SubscriptionsChartPage from './scenes/statistics/subscriptionChartPage';
+import TransactionsChartPage from './scenes/statistics/transactionChartPage';
 const App = () => {
   const [theme, colorMode] = useMode();
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -43,6 +44,8 @@ const App = () => {
                   <Route path='/devices' element={<Devices/>}/>
                   <Route path='/subscriptions' element={<Subscriptions/>} />
                   <Route path='/form' element={<ProfileForm />} />
+                  <Route path='/subscription_stats' element={<SubscriptionsChartPage />} />
+                  <Route path='/transaction_stats' element={<TransactionsChartPage />} />
                 </Routes>
               </main>
             </>
