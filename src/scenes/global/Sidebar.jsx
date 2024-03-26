@@ -180,6 +180,14 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+
+<Item
+              title="Register Device"
+              to="/device_form"
+              icon={<PersonOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
             <Typography
               variant="h6"
               color={colors.grey[300]}
