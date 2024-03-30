@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-import { useTheme } from "@mui/material";
 import axios from "axios";
-import SearchBar from "../../components/searchBar";
+import { useTheme } from "@mui/material";
+import SearchBar from "../../components/SearchBar";
 import UserDetails from "../../components/UserDetails";
-import { Link } from "react-router-dom"; // Import Link
+import { Link } from "react-router-dom";
 
 const Users = () => {
   const theme = useTheme();
@@ -16,6 +17,7 @@ const Users = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUserData, setFilteredUserData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const navigate = useNavigate(); // Access the navigation function
 
   useEffect(() => {
     axios
@@ -54,22 +56,16 @@ const Users = () => {
   }, [searchTerm, userData]);
 
   const handleRowClick = (params) => {
-    setSelectedUser(params.row);
+    const userEmail = params.row.email;
+    navigate(`/user/${userEmail}`); // Use navigate to redirect
   };
 
   const columns = [
     { field: "cms_id", headerName: "CMS ID" },
-    { 
-      field: "first_name", 
-      headerName: "First Name", 
-      flex: 1,
-      renderCell: (params) => (
-        <Link to={`/user/${params.row.email}`}
-        style={{ textDecoration: 'none', color: 'white', fontSize: "14px" }}
-        >{params.value}
-        
-        </Link>
-      )
+    {
+      field: "first_name",
+      headerName: "First Name",
+      flex: 1
     },
     { field: "last_name", headerName: "Last Name", flex: 1 },
     { field: "phone_no", headerName: "Phone Number", flex: 1 },
@@ -81,9 +77,9 @@ const Users = () => {
     <Box m="20px">
       <Header title="USERS" subtitle="List of registered Users" />
       <Typography>
-        Click on a user's name to their information
+        Click on a user's name to view their information
       </Typography>
-      
+      <SearchBar placeholder="Search" handleSearchChange={handleSearchChange} />
       {selectedUser ? (
         <UserDetails user={selectedUser} onClose={() => setSelectedUser(null)} />
       ) : (
@@ -116,10 +112,6 @@ const Users = () => {
             },
           }}
         >
-          <SearchBar
-            placeholder="Search"
-            handleSearchChange={handleSearchChange}
-          />
           <Box m="20px 0" height="75vh" bgcolor="background.default" borderRadius={5}>
             <DataGrid
               rows={filteredUserData}

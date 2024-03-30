@@ -5,7 +5,7 @@ import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import axios from "axios";
-import SearchBar from "../../components/searchBar";
+import SearchBar from "../../components/SearchBar";
 
 const Transactions = () => {
   const theme = useTheme();
