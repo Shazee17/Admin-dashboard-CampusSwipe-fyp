@@ -11,6 +11,7 @@ import Transactions from './scenes/transactions';
 import LoginPage from './scenes/loginPage';
 import Devices from './scenes/devices';
 import ProfileForm from "./scenes/form"
+import DeviceForm from './scenes/deviceForm';
 import Subscriptions from './scenes/subscriptions';
 import SubscriptionsChartPage from './scenes/statistics/subscriptionChartPage';
 import TransactionsChartPage from './scenes/statistics/transactionChartPage';
@@ -46,6 +47,7 @@ const App = () => {
                   <Route path='/devices' element={<Devices/>}/>
                   <Route path='/subscriptions' element={<Subscriptions/>} />
                   <Route path='/form' element={<ProfileForm />} />
+                  <Route path='/device_form' element={<DeviceForm />} />
                   <Route path='/subscription_stats' element={<SubscriptionsChartPage />} />
                   <Route path='/transaction_stats' element={<TransactionsChartPage />} />
                   <Route path='/device_stats' element={<DeviceTransactionChartPage />} />

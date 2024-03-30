@@ -61,15 +61,6 @@ const Devices = () => {
     <Box m="20px">
       <Header title="DEVICES" />
 
-      {/* "Register a new device" text */}
-      <Typography variant="h4" color={colors.greenAccent[200]} gutterBottom>
-        Register a new device
-      </Typography>
-      
-      {/* Render the Form component */}
-      <DeviceForm />
-
-
       <Box
         m="40px 0 0 0"
         height="75vh"
