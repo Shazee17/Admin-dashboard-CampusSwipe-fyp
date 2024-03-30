@@ -90,12 +90,12 @@ const Sidebar = () => {
           {!isCollapsed && (
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
-                {/* <Box borderRadius="50%" height="40px" width="40px" >
+                <Box borderRadius="50%" height="40px" width="40px" >
                   <img src={ProfilePic} alt="profile-user" style={{
                     maxWidth: "100%",
                     borderRadius: "50%"
                   }} />
-                </Box>  */}
+                </Box> 
               </Box>
               <Box textAlign="center">
                 <Typography
@@ -171,7 +171,7 @@ const Sidebar = () => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >  
-              Register
+              Registration Pages
             </Typography>
             <Item
               title="Register User"
@@ -193,7 +193,7 @@ const Sidebar = () => {
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >  
-              Stats
+              Statistics
             </Typography>
             <Item
               title="Transaction Statistics"
