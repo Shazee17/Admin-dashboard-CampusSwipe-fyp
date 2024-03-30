@@ -15,11 +15,8 @@ import DeviceForm from './scenes/deviceForm';
 import Subscriptions from './scenes/subscriptions';
 import SubscriptionsChartPage from './scenes/statistics/subscriptionChartPage';
 import TransactionsChartPage from './scenes/statistics/transactionChartPage';
-<<<<<<< HEAD
 import UserDetailsPage from './components/UserDetails'; // Import UserDetailsPage component
-=======
 import DeviceTransactionChartPage from './scenes/statistics/deviceTransactionChartPage';
->>>>>>> 61b6a863ab63f68cf812603a2168ccf3a1e887c4
 
 const App = () => {
   const [theme, colorMode] = useMode();
@@ -35,35 +32,6 @@ const App = () => {
 
   return (
     isLoggedIn ? (
-<<<<<<< HEAD
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <div className='app'>
-          <>
-            <Sidebar />
-            <main className='content'>
-              <Topbar />
-              <Routes>
-                <Route path='/' element={<Dashboard />} />
-                <Route path='/team' element={<Team />} />
-                <Route path='/users' element={<Users />} />
-                <Route path='/user/:id' element={<UserDetailsPage />} /> {/* Define route for user details */}
-                <Route path='/transactions' element={<Transactions />} />
-                <Route path='/devices' element={<Devices />} />
-                <Route path='/subscriptions' element={<Subscriptions />} />
-                <Route path='/form' element={<ProfileForm />} />
-                <Route path='/device_form' element={<DeviceForm />} />
-                <Route path='/subscription_stats' element={<SubscriptionsChartPage />} />
-                <Route path='/transaction_stats' element={<TransactionsChartPage />} />
-              </Routes>
-            </main>
-          </>
-        </div>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
-    ): (
-=======
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -76,6 +44,7 @@ const App = () => {
                   <Route path='/' element={<Dashboard />} />
                   <Route path='/team' element={<Team />} />
                   <Route path='/users' element={<Users />} />
+                  <Route path='/user/:id' element={<UserDetailsPage />} />
                   <Route path='/transactions' element={<Transactions />} />
                   <Route path='/devices' element={<Devices/>}/>
                   <Route path='/subscriptions' element={<Subscriptions/>} />
@@ -91,7 +60,6 @@ const App = () => {
         </ThemeProvider>
       </ColorModeContext.Provider>
     ) : (
->>>>>>> 61b6a863ab63f68cf812603a2168ccf3a1e887c4
       <LoginPage onLogin={handleLogin} />
     )
   );
