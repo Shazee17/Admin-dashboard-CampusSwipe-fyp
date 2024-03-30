@@ -15,8 +15,9 @@ import DeviceForm from './scenes/deviceForm';
 import Subscriptions from './scenes/subscriptions';
 import SubscriptionsChartPage from './scenes/statistics/subscriptionChartPage';
 import TransactionsChartPage from './scenes/statistics/transactionChartPage';
-import UserDetailsPage from './components/UserDetails'; // Import UserDetailsPage component
 import DeviceTransactionChartPage from './scenes/statistics/deviceTransactionChartPage';
+import UserDetailsPage from './components/UserDetails'; // Import UserDetailsPage component
+
 
 const App = () => {
   const [theme, colorMode] = useMode();

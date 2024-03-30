@@ -209,6 +209,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+            <Item
+              title="Device Statistics"
+              to="/device_stats"
+              icon={<PersonOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
           </Box>
         </Menu>
       </ProSidebar>

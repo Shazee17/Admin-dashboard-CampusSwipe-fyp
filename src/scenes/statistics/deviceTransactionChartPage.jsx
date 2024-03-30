@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
 
 const ChartComponent = () => {
   const [chartImage, setChartImage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [totalTransactions, setTotalTransactions] = useState(0);
+  const [filterDate, setFilterDate] = useState(null);
+  const [filterType, setFilterType] = useState('month');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,9 +34,24 @@ const ChartComponent = () => {
         // Initialize an object to store transaction counts for each device
         const transactionCounts = {};
 
+        // Filter transactions based on the selected filter date and type
+        const filteredTransactions = transactionsResponse.data.filter(transaction => {
+          const transactionDate = new Date(transaction.date);
+          if (filterType === 'month') {
+            return filterDate
+              ? transactionDate.getMonth() === filterDate.getMonth() &&
+                transactionDate.getFullYear() === filterDate.getFullYear()
+              : true;
+          } else {
+            return filterDate
+              ? transactionDate.toDateString() === filterDate.toDateString()
+              : true;
+          }
+        });
+
         // Count transactions for each device and calculate total transactions
         let total = 0;
-        transactionsResponse.data.forEach(transaction => {
+        filteredTransactions.forEach(transaction => {
           const deviceId = transaction.device_id;
           if (transactionCounts[deviceId]) {
             transactionCounts[deviceId]++;
@@ -36,6 +64,11 @@ const ChartComponent = () => {
         // Update total transactions state
         setTotalTransactions(total);
 
+        // Generate random colors based on the number of devices
+        const colors = deviceIds
+          .filter(id => transactionCounts[id] > 0)
+          .map(() => getRandomColor());
+
         // Prepare chart data
         const chartData = {
           width: 500,
@@ -43,15 +76,30 @@ const ChartComponent = () => {
           backgroundColor: 'transparent',
           format: 'png',
           chart: {
-            type: 'doughnut',
+            type: 'outlabeledPie',
             data: {
-              labels: deviceIds,
-              datasets: [{ data: deviceIds.map(id => transactionCounts[id] || 0) }], // Use transaction counts as data
+              labels: deviceIds.filter(id => transactionCounts[id] > 0),
+              datasets: [
+                {
+                  backgroundColor: colors,
+                  data: deviceIds
+                    .filter(id => transactionCounts[id] > 0)
+                    .map(id => transactionCounts[id]),
+                },
+              ],
             },
             options: {
               plugins: {
-                doughnutlabel: {
-                  labels: [{ text: `${total}`, font: { size: 20 } }, { text: 'total' }],
+                legend: false,
+                outlabels: {
+                  text: '%l %p',
+                  color: 'white',
+                  stretch: 35,
+                  font: {
+                    resizable: true,
+                    minSize: 12,
+                    maxSize: 18,
+                  },
                 },
               },
             },
@@ -80,15 +128,39 @@ const ChartComponent = () => {
         URL.revokeObjectURL(chartImage);
       }
     };
-  }, []); // Empty dependency array ensures that the effect runs only once when the component mounts
+  }, [filterDate, filterType]);
+
+  const handleFilterChange = (event) => {
+    const { value } = event.target;
+    setFilterType(value);
+  };
+
+  const handleDateChange = (date) => {
+    setFilterDate(date);
+  };
 
   return (
     <div>
-      {loading ? (
-        <p>Loading chart...</p>
+      <label htmlFor="filterType">Filter by:</label>
+      <select id="filterType" value={filterType} onChange={handleFilterChange}>
+        <option value="month">Month</option>
+        <option value="day">Day</option>
+      </select>
+      {filterType === 'month' ? (
+        <DatePicker
+          selected={filterDate}
+          onChange={handleDateChange}
+          showMonthYearPicker
+          dateFormat="MM/yyyy"
+        />
       ) : (
-        <img src={chartImage} alt="Chart" />
+        <DatePicker
+          selected={filterDate}
+          onChange={handleDateChange}
+          dateFormat="dd/MM/yyyy"
+        />
       )}
+      {loading ? <p>Loading chart...</p> : <img src={chartImage} alt="Chart" />}
     </div>
   );
 };
