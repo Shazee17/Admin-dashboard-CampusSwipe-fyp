@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Header from "../../components/Header";
+import { Box, Button } from "@mui/material";
 
 const ChartPage = () => {
   const [imageUrl, setImageUrl] = useState('');
@@ -139,13 +141,17 @@ const ChartPage = () => {
   };
 
   return (
-    <div>
-      <h1>Chart Page</h1>
-      <button onClick={() => setChartType('daily')}>Daily</button>
-      <button onClick={() => setChartType('weekly')}>Weekly</button>
-      <button onClick={() => setChartType('monthly')}>Monthly</button>
-      {imageUrl && <img src={imageUrl} alt="Chart" />}
-    </div>
+    <Box m="20px">
+      <Header title="Transaction Graphs" subtitle="Daily, Weekly and Monthly transactions" />
+      <Box display="flex" justifyContent="space-around" alignItems="center" mb="20px">
+        <Button variant="contained" color="secondary" onClick={() => setChartType('daily')}>Daily</Button>
+        <Button variant="contained" color="secondary" onClick={() => setChartType('weekly')}>Weekly</Button>
+        <Button variant="contained" color="secondary" onClick={() => setChartType('monthly')}>Monthly</Button>
+      </Box>
+      <Box bgcolor="white" p="10px" borderRadius="5px" width="700px">
+        {imageUrl && <img style={{width: "100%" }} src={imageUrl} alt="Chart" />}
+      </Box>
+    </Box>
   );
 };
 

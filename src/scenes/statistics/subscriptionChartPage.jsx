@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Box, Typography } from '@mui/material';
+import Header from "../../components/Header";
 
 const ChartComponent = () => {
   const [imageBlob, setImageBlob] = useState(null);
@@ -100,11 +102,40 @@ const ChartComponent = () => {
   }, []);
 
   return (
-    <div>
-      {imageBlob && (
-        <img src={URL.createObjectURL(imageBlob)} alt="Chart" />
-      )}
-    </div>
+    <Box m={4}>
+      <Header title="User Subscription Chart" />
+      <Box mt={2}>
+        <Typography variant="h6" gutterBottom>
+          Subscription Overview
+        </Typography>
+        <Box display="flex" flexDirection="column">
+          <Box display="flex" alignItems="center">
+            <Box
+              width={20}
+              height={20}
+              borderRadius="50%"
+              bgcolor="green"
+              mr={1}
+            />
+            <Typography>Subscribed</Typography>
+          </Box>
+          <Box display="flex" alignItems="center">
+            <Box
+              width={20}
+              height={20}
+              borderRadius="50%"
+              bgcolor="white"
+              mr={1}
+              border="1px solid #000" // Add border to distinguish white circle
+            />
+            <Typography>Unsubscribed</Typography>
+          </Box>
+        </Box>
+        {imageBlob && (
+          <img src={URL.createObjectURL(imageBlob)} alt="Chart" />
+        )}
+      </Box>
+    </Box>
   );
 };
 
