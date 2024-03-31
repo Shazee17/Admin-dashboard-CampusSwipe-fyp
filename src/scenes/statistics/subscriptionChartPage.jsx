@@ -13,8 +13,8 @@ const ChartComponent = () => {
         const response = await axios.get('http://localhost:3000/users/subscribed');
 
         // Extract necessary data
-        const subscribedPercentage = response.data.subscribedPercentage;
-        const unsubscribedPercentage = response.data.unsubscribedPercentage;
+        const subscribedPercentage = Math.round(response.data.subscribedPercentage);
+        const unsubscribedPercentage = Math.round(response.data.unsubscribedPercentage);
         const totalUsers = response.data.totalStudents;
 
         // Create chart data
@@ -34,7 +34,7 @@ const ChartComponent = () => {
                   borderWidth: 0,
                 },
               ],
-              labels: ['Subscribed', 'Unsubscribed'],
+              labels: ['Subscribed Percentage', 'Unsubscribed Percentage'],
             },
             options: {
               circumference: 3.141592653589793,
@@ -117,7 +117,7 @@ const ChartComponent = () => {
               bgcolor="green"
               mr={1}
             />
-            <Typography>Subscribed</Typography>
+            <Typography>Subscribed Percentage</Typography>
           </Box>
           <Box display="flex" alignItems="center">
             <Box
@@ -128,7 +128,7 @@ const ChartComponent = () => {
               mr={1}
               border="1px solid #000" // Add border to distinguish white circle
             />
-            <Typography>Unsubscribed</Typography>
+            <Typography>Unsubscribed Percentage</Typography>
           </Box>
         </Box>
         {imageBlob && (
