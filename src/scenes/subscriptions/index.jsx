@@ -157,10 +157,10 @@ const getDisplayDuration = (duration) => {
   switch (duration) {
     case "7d":
       return "7 Days";
+    case "15d":
+      return "15 Days";  
     case "30d":
       return "30 Days";
-    case "90d":
-      return "90 Days";
     default:
       return duration; // Return the original duration if not matched
   }
@@ -211,8 +211,8 @@ const columns = [
         >
           <MenuItem value="">Select Duration</MenuItem>
           <MenuItem value="7d">7 Days</MenuItem>
+          <MenuItem value="15d">15 Days</MenuItem>
           <MenuItem value="30d">30 Days</MenuItem>
-          <MenuItem value="90d">90 Days</MenuItem>
         </Select>
       );
     }
