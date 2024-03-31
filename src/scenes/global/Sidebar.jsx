@@ -5,7 +5,10 @@ import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
 import ProfilePic from "../../assets/user.png"
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import AddToHomeScreenIcon from '@mui/icons-material/AddToHomeScreen';
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import PaidIcon from '@mui/icons-material/Paid';
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
@@ -13,6 +16,9 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import BarChartIcon from '@mui/icons-material/BarChart';
+import DonutLargeIcon from '@mui/icons-material/DonutLarge';
+import PieChartIcon from '@mui/icons-material/PieChart';
 import { useState } from "react";
 import Logo from "./Logo";
 
@@ -161,7 +167,7 @@ const Sidebar = () => {
             <Item
               title="Subscriptions"
               to="/subscriptions"
-              icon={<DocumentScannerIcon />} 
+              icon={<PaidIcon />} 
               selected={selected}
               setSelected={setSelected}
             />
@@ -176,7 +182,7 @@ const Sidebar = () => {
             <Item
               title="Register User"
               to="/form"
-              icon={<PersonOutlinedIcon />}
+              icon={<PersonAddIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -184,7 +190,7 @@ const Sidebar = () => {
 <Item
               title="Register Device"
               to="/device_form"
-              icon={<PersonOutlinedIcon />}
+              icon={<AddToHomeScreenIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -196,23 +202,23 @@ const Sidebar = () => {
               Statistics
             </Typography>
             <Item
-              title="Transaction Statistics"
+              title="Transaction Bar Graph"
               to="/transaction_stats"
-              icon={<PersonOutlinedIcon />}
+              icon={<BarChartIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Subscription Statistics"
               to="/subscription_stats"
-              icon={<PersonOutlinedIcon />}
+              icon={<DonutLargeIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Device Statistics"
               to="/device_stats"
-              icon={<PersonOutlinedIcon />}
+              icon={<PieChartIcon />}
               selected={selected}
               setSelected={setSelected}
             />
