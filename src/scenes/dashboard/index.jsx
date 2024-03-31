@@ -114,7 +114,7 @@ const Dashboard = () => {
             flexWrap="wrap"
             justifyContent="space-between"
           >
-            {transactionsData.slice(-3).map((transaction, i) => (
+            {transactionsData.slice(-6).map((transaction, i) => (
               <Box
                 key={`${transaction.id}-${i}`}
                 p="15px"
