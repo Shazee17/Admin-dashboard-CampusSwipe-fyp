@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Box, Typography, FormControl, InputLabel, Select, MenuItem, CircularProgress } from "@mui/material";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Header from "../../components/Header";
 
 const getRandomColor = () => {
   const letters = '0123456789ABCDEF';
@@ -140,28 +142,32 @@ const ChartComponent = () => {
   };
 
   return (
-    <div>
-      <label htmlFor="filterType">Filter by:</label>
-      <select id="filterType" value={filterType} onChange={handleFilterChange}>
-        <option value="month">Month</option>
-        <option value="day">Day</option>
-      </select>
-      {filterType === 'month' ? (
+    <Box m="20px">
+      <Header title="Device Transaction Pie Chart" />
+      <Box display="flex" alignItems="center" mt={2}>
+        <Typography variant="body1" mr={2}>Filter by:</Typography>
+        <FormControl sx={{ minWidth: 120, mr: 2 }}>
+          <InputLabel id="filterType-label">Type</InputLabel>
+          <Select
+            labelId="filterType-label"
+            id="filterType"
+            value={filterType}
+            onChange={handleFilterChange}
+          >
+            <MenuItem value="month">Month</MenuItem>
+            <MenuItem value="day">Day</MenuItem>
+          </Select>
+        </FormControl>
         <DatePicker
           selected={filterDate}
           onChange={handleDateChange}
-          showMonthYearPicker
-          dateFormat="MM/yyyy"
+          dateFormat={filterType === 'month' ? 'MM/yyyy' : 'dd/MM/yyyy'}
+          showMonthYearPicker={filterType === 'month'}
+          placeholderText="Select date"
         />
-      ) : (
-        <DatePicker
-          selected={filterDate}
-          onChange={handleDateChange}
-          dateFormat="dd/MM/yyyy"
-        />
-      )}
-      {loading ? <p>Loading chart...</p> : <img src={chartImage} alt="Chart" />}
-    </div>
+      </Box>
+      {loading ? <CircularProgress /> : <img src={chartImage} alt="Chart" />}
+    </Box>
   );
 };
 
