@@ -66,19 +66,65 @@ const Subscriptions = () => {
 
   const toggleSubscription = async (id, currentStatus) => {
     try {
-      await axios.put(`http://localhost:3000/updateSubscription/${id}`, {
-        is_subscribed: !currentStatus
-      });
+        const updatedStatus = !currentStatus;
 
-      const updatedUserData = userData.map(user =>
-        user._id === id ? { ...user, is_subscribed: !currentStatus } : user
-      );
-      setUserData(updatedUserData);
-      setFilteredUserData(updatedUserData);
+        // Update subscription status
+        await axios.put(`http://localhost:3000/updateSubscription/${id}`, {
+            is_subscribed: updatedStatus
+        });
+
+        // Get user's email
+        const user = userData.find(user => user._id === id);
+        const email = user ? user.email : null;
+
+        // If email exists, send notification
+        if (email) {
+            let message = '';
+            if (updatedStatus) {
+                message = `Dear ${user.first_name}, 
+
+                You have successfully subscribed to the CampusSwipe Package. 
+
+                With this subscription, you can now enjoy seamless access to our bus services. 
+
+                Thank you for choosing CampusSwipe.
+
+                Best regards,
+                Team CampusSwipe`;
+            } else {
+                message = `Dear ${user.first_name}, 
+
+                You have been unsubscribed from the CampusSwipe Package. 
+
+                We hope you've enjoyed our services and consider reactivating your subscription in the future. 
+
+                Thank you for being part of CampusSwipe.
+
+                Best regards,
+                Team CampusSwipe`;
+            }
+
+            await axios.post("http://localhost:3000/sendEmailFromWeb", {
+                email,
+                subject: "Subscription Status Update",
+                message
+            });
+        }
+
+        // Update local state
+        const updatedUserData = userData.map(user =>
+            user._id === id ? { ...user, is_subscribed: updatedStatus } : user
+        );
+        setUserData(updatedUserData);
+        setFilteredUserData(updatedUserData);
     } catch (error) {
-      console.error("Error updating subscription status:", error);
+        console.error("Error updating subscription status:", error);
     }
-  };
+};
+
+
+
+  
 
   const handleDurationChange = async (event, cms_id) => {
     const { value } = event.target;
