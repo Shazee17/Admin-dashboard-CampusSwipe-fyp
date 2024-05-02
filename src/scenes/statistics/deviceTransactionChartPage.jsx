@@ -72,41 +72,43 @@ const ChartComponent = () => {
           .map(() => getRandomColor());
 
         // Prepare chart data
-        const chartData = {
-          width: 500,
-          height: 300,
-          backgroundColor: 'transparent',
-          format: 'png',
-          chart: {
-            type: 'outlabeledPie',
-            data: {
-              labels: deviceIds.filter(id => transactionCounts[id] > 0),
-              datasets: [
-                {
-                  backgroundColor: colors,
-                  data: deviceIds
-                    .filter(id => transactionCounts[id] > 0)
-                    .map(id => transactionCounts[id]),
-                },
-              ],
-            },
-            options: {
-              plugins: {
-                legend: false,
-                outlabels: {
-                  text: '%l %p',
-                  color: 'white',
-                  stretch: 35,
-                  font: {
-                    resizable: true,
-                    minSize: 12,
-                    maxSize: 18,
-                  },
-                },
-              },
-            },
+        // Prepare chart data
+const chartData = {
+  width: 400,
+  height: 250, // Adjust the height as needed
+  backgroundColor: 'transparent',
+  format: 'png',
+  chart: {
+    type: 'outlabeledPie',
+    data: {
+      labels: deviceIds.filter(id => transactionCounts[id] > 0),
+      datasets: [
+        {
+          backgroundColor: colors,
+          data: deviceIds
+            .filter(id => transactionCounts[id] > 0)
+            .map(id => transactionCounts[id]),
+        },
+      ],
+    },
+    options: {
+      plugins: {
+        legend: false,
+        outlabels: {
+          text: '%l %p',
+          color: 'white',
+          stretch: 35,
+          font: {
+            resizable: true,
+            minSize: 12,
+            maxSize: 18,
           },
-        };
+        },
+      },
+    },
+  },
+};
+
 
         // Send post request to QuickChart API
         const response = await axios.post('https://quickchart.io/chart', chartData, {
@@ -142,7 +144,7 @@ const ChartComponent = () => {
   };
 
   return (
-    <Box m="20px">
+    <Box m="20px" minHeight="calc(100vh - 140px)">
       <Header title="Device Transaction Pie Chart" />
       <Box display="flex" alignItems="center" mt={2}>
         <Typography variant="body1" mr={2}>Filter by:</Typography>
@@ -166,7 +168,15 @@ const ChartComponent = () => {
           placeholderText="Select date"
         />
       </Box>
-      {loading ? <CircularProgress /> : <img src={chartImage} alt="Chart" />}
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="300px">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="300px">
+          <img src={chartImage} alt="Chart" />
+        </Box>
+      )}
     </Box>
   );
 };

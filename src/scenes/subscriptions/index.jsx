@@ -35,7 +35,8 @@ const Subscriptions = () => {
       const formattedUsers = users.map(user => {
         const subscription = subscriptions.find(sub => sub.cms_id === user.cms_id);
         const duration = subscription ? subscription.duration : "";
-        return { ...user, duration };
+        const subscriptionDate = subscription ? subscription.subscriptionDate : ""; // Add subscription date
+        return { ...user, duration, subscriptionDate };
       });
   
       setUserData(formattedUsers);
@@ -49,6 +50,7 @@ const Subscriptions = () => {
       console.error("Error fetching data:", error);
     }
   };
+  
   
 
   const handleSearchChange = (event) => {
@@ -66,65 +68,60 @@ const Subscriptions = () => {
 
   const toggleSubscription = async (id, currentStatus) => {
     try {
-        const updatedStatus = !currentStatus;
-
-        // Update subscription status
-        await axios.put(`http://localhost:3000/updateSubscription/${id}`, {
-            is_subscribed: updatedStatus
-        });
-
-        // Get user's email
-        const user = userData.find(user => user._id === id);
-        const email = user ? user.email : null;
-
-        // If email exists, send notification
-        if (email) {
-            let message = '';
-            if (updatedStatus) {
-                message = `Dear ${user.first_name}, 
-
-                You have successfully subscribed to the CampusSwipe Package. 
-
-                With this subscription, you can now enjoy seamless access to our bus services. 
-
-                Thank you for choosing CampusSwipe.
-
-                Best regards,
-                Team CampusSwipe`;
-            } else {
-                message = `Dear ${user.first_name}, 
-
-                You have been unsubscribed from the CampusSwipe Package. 
-
-                We hope you've enjoyed our services and consider reactivating your subscription in the future. 
-
-                Thank you for being part of CampusSwipe.
-
-                Best regards,
-                Team CampusSwipe`;
-            }
-
-            await axios.post("http://localhost:3000/sendEmailFromWeb", {
-                email,
-                subject: "Subscription Status Update",
-                message
-            });
-        }
-
-        // Update local state
-        const updatedUserData = userData.map(user =>
-            user._id === id ? { ...user, is_subscribed: updatedStatus } : user
-        );
-        setUserData(updatedUserData);
-        setFilteredUserData(updatedUserData);
-    } catch (error) {
-        console.error("Error updating subscription status:", error);
-    }
-};
-
-
-
+      const updatedStatus = !currentStatus;
   
+      // Update subscription status
+      await axios.put(`http://localhost:3000/updateSubscription/${id}`, {
+        is_subscribed: updatedStatus
+      });
+  
+      // Get user's email
+      const user = userData.find(user => user._id === id);
+      const email = user ? user.email : null;
+  
+      // If email exists, send notification
+      if (email) {
+        let message = '';
+        if (updatedStatus) {
+          message = `Dear ${user.first_name}, 
+            You have successfully subscribed to the CampusSwipe Package. 
+            With this subscription, you can now enjoy seamless access to our bus services. 
+            Thank you for choosing CampusSwipe.
+            Best regards,
+            Team CampusSwipe`;
+        } else {
+          message = `Dear ${user.first_name}, 
+            You have been unsubscribed from the CampusSwipe Package. 
+            We hope you've enjoyed our services and consider reactivating your subscription in the future. 
+            Thank you for being part of CampusSwipe.
+            Best regards,
+            Team CampusSwipe`;
+        }
+  
+        await axios.post("http://localhost:3000/sendEmailFromWeb", {
+          email,
+          subject: "Subscription Status Update",
+          message
+        });
+      }
+
+       // Set subscription date if user is subscribed
+       if (updatedStatus) {
+        await axios.post(`http://localhost:3000/setSubscriptionDate`, { cms_id: user.cms_id });
+    }
+  
+      // Update local state immediately
+      const updatedUserData = userData.map(user =>
+        user._id === id ? { ...user, is_subscribed: updatedStatus, subscriptionDate: updatedStatus ? new Date() : null } : user
+      );
+      setUserData(updatedUserData);
+      setFilteredUserData(updatedUserData);
+    } catch (error) {
+      console.error("Error updating subscription status:", error.message); // Log the specific error message
+    }
+  };
+  
+
 
   const handleDurationChange = async (event, cms_id) => {
     const { value } = event.target;
@@ -181,6 +178,18 @@ const Subscriptions = () => {
         return user.duration;
     }
   };
+
+  const getDisplayDate = (dateString, isSubscribed) => {
+    if (!isSubscribed) {
+      return "N/A"; // Return "N/A" if the user is unsubscribed
+    }
+    if (!dateString) {
+      return ""; // Return empty string if date is not available
+    }
+    const date = new Date(dateString);
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return date.toLocaleDateString('en-GB', options);
+  };
   
 
   const columns = [
@@ -210,6 +219,12 @@ const Subscriptions = () => {
       }
     },
     { 
+      field: "subscriptionDate", 
+      headerName: "Subscription Date", 
+      flex: 1, 
+      valueGetter: (params) => getDisplayDate(params.row.subscriptionDate, params.row.is_subscribed)
+    },
+        { 
       field: "duration", 
       headerName: "Duration", 
       flex: 1,
@@ -235,6 +250,8 @@ const Subscriptions = () => {
       }
     }
   ];
+  
+  
 
   return (
     <Box m="20px">
