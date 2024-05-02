@@ -3,7 +3,7 @@ import axios from 'axios';
 import Header from "../../components/Header";
 import { Box, Button } from "@mui/material";
 
-// Define month names for easy reference
+
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const ChartPage = () => {
