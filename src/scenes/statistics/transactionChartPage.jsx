@@ -3,6 +3,9 @@ import axios from 'axios';
 import Header from "../../components/Header";
 import { Box, Button } from "@mui/material";
 
+// Define month names for easy reference
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 const ChartPage = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [chartData, setChartData] = useState(null);
@@ -14,7 +17,7 @@ const ChartPage = () => {
         // Fetch data from backend based on chartType
         const response = await axios.get(getBackendUrl(chartType));
         const data = response.data;
-  
+
         // Process data to format for chart
         let labels = [];
         let dataset = [];
@@ -26,15 +29,15 @@ const ChartPage = () => {
           });
           dataset = data.map(item => item.count);
         } else if (chartType === 'weekly') {
-          // Assuming data is an array of objects with "week" and "count" properties
-          labels = data.map(item => `Week ${item.week}`);
+          // Correctly formatting the labels for weekly data
+          labels = data.map(item => `Week ${item._id.week} of ${item._id.year}`);
           dataset = data.map(item => item.count);
         } else if (chartType === 'monthly') {
-          // Assuming data is an array of objects with "month" and "count" properties
-          labels = data.map(item => item.month);
+          // Assuming data includes month and year info, format correctly
+          labels = data.map(item => `${monthNames[item._id.month - 1]} ${item._id.year}`);
           dataset = data.map(item => item.count);
         }
-  
+
         // Create chart data
         const chartData = {
           labels: labels,
@@ -44,13 +47,13 @@ const ChartPage = () => {
             backgroundColor: 'rgba(54, 162, 235, 0.5)'
           }]
         };
-  
+
         setChartData(chartData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-  
+
     fetchData();
   }, [chartType]);
 
@@ -70,7 +73,7 @@ const ChartPage = () => {
                   yAxes: [{
                     ticks: {
                       beginAtZero: true,
-                      stepSize: calculateStepSize(chartData.datasets[0].data) // Calculate step size dynamically
+                      stepSize: calculateStepSize(chartData.datasets[0].data)
                     },
                     scaleLabel: {
                       display: true,
@@ -99,10 +102,9 @@ const ChartPage = () => {
               }
             }
           }, {
-            responseType: 'arraybuffer' // Ensure response is received as binary data
+            responseType: 'arraybuffer'
           });
 
-          // Convert binary data to Blob and create URL
           const blob = new Blob([response.data], { type: 'image/png' });
           const url = URL.createObjectURL(blob);
           setImageUrl(url);
@@ -115,13 +117,11 @@ const ChartPage = () => {
     generateChart();
   }, [chartData, chartType]);
 
-  // Function to calculate step size based on max value
   const calculateStepSize = (data) => {
     const max = Math.max(...data);
-    return Math.ceil(max / 5); // Adjust divisor as needed
+    return Math.ceil(max / 5);
   };
 
-  // Function to get backend URL based on chartType
   const getBackendUrl = (type) => {
     switch (type) {
       case 'daily':
@@ -135,7 +135,6 @@ const ChartPage = () => {
     }
   };
 
-  // Function to capitalize first letter of string
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
@@ -149,7 +148,7 @@ const ChartPage = () => {
         <Button variant="contained" color="secondary" onClick={() => setChartType('monthly')}>Monthly</Button>
       </Box>
       <Box bgcolor="white" p="10px" borderRadius="5px" width="700px">
-        {imageUrl && <img style={{width: "100%" }} src={imageUrl} alt="Chart" />}
+        {imageUrl && <img style={{width: "100%"}} src={imageUrl} alt="Chart" />}
       </Box>
     </Box>
   );
